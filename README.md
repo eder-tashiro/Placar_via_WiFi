@@ -1,7 +1,7 @@
 # Placar_via_WiFi
 
 Projeto de Display de 7 Segmentos com LEDs WS2811 e ESP-01
-Este projeto utiliza um microcontrolador ESP-01 e uma fita de LED endereçável WS2811 para criar um display de 7 segmentos controlado via uma página web. O projeto permite selecionar um número entre 0 a 9 e exibi-lo no display de LEDs, além de iniciar uma contagem regressiva a partir do número selecionado.
+Este projeto utiliza um microcontrolador ESP-01 e uma fita de LED endereçável WS2811 para criar um display de 7 segmentos controlado via uma página web. O projeto permite selecionar um número entre 0 a 9 e exibi-lo no display de LEDs, além de iniciar uma contagem regressiva a partir do número selecionado.Podendo assim ser utilizado tambem como um cronometro ,adicionando mais digitos ao esquema inicial.
 
 Componentes Utilizados
 Microcontrolador: ESP-01 (ESP8266)
