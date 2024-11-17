@@ -3,19 +3,19 @@
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>
 
-// Configurações da fita de LED
+
 #define LED_PIN 2
 #define NUM_SEGMENTS 7
 
 WiFiManager wifiManager;
 
-// Instância para controle de LEDs
+
 Adafruit_NeoPixel pixels(NUM_SEGMENTS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
-// Servidor web
+
 ESP8266WebServer server(80);
 
-// Mapeamento de segmentos para dígitos
+
 const uint8_t digits[10][7] PROGMEM = {
     {1, 1, 1, 1, 1, 1, 0}, // 0
     {1, 0, 0, 0, 0, 1, 0}, // 1
@@ -29,9 +29,9 @@ const uint8_t digits[10][7] PROGMEM = {
     {1, 1, 1, 0, 1, 1, 1}  // 9
 };
 
-// Variáveis globais
+
 int currentDigit = 0;
-int countdownValue = 10; // Valor da contagem regressiva
+int countdownValue = 10; 
 
 // Página HTML armazenada na memória flash
 const char webpage[] PROGMEM = R"rawliteral(
@@ -84,8 +84,8 @@ const char webpage[] PROGMEM = R"rawliteral(
   <div id="countdown">10</div>
 
   <script>
-    let countdownInterval; // Intervalo da contagem regressiva
-    let countdownValue = 10; // Valor inicial da contagem regressiva
+    let countdownInterval; 
+    let countdownValue = 10; 
 
     function sendDigit(digit) {
       // Envia o dígito selecionado para o servidor
@@ -117,33 +117,33 @@ const char webpage[] PROGMEM = R"rawliteral(
     }
 
     function startCountdown() {
-      // Verifica se um dígito foi selecionado
+     
       const selectedDigit = document.getElementById('selectedDigit').textContent;
       if (selectedDigit === 'Nenhum digito selecionado') {
         alert('Selecione um dígito primeiro!');
         return;
       }
 
-      // Inicia a contagem regressiva a partir do valor selecionado
+      
       countdownValue = parseInt(selectedDigit.replace('Digito selecionado: ', '').trim());
       const countdownDisplay = document.getElementById('countdown');
       countdownDisplay.textContent = countdownValue;
 
-      // Se já houver um intervalo de contagem regressiva em andamento, limpa-o
+      
       if (countdownInterval) {
         clearInterval(countdownInterval);
       }
 
-      // Atualiza a contagem regressiva a cada segundo
+      
       countdownInterval = setInterval(() => {
         countdownValue--;
         countdownDisplay.textContent = countdownValue;
         
-        // Atualiza o display de LEDs com o novo valor da contagem regressiva
-        fetch(`/setDigit?value=${countdownValue}`); // Atualiza os LEDs com o novo valor
+        
+        fetch(`/setDigit?value=${countdownValue}`); 
 
         if (countdownValue <= 0) {
-          clearInterval(countdownInterval); // Para a contagem quando chegar a zero
+          clearInterval(countdownInterval); 
           countdownDisplay.textContent = 'Tempo Esgotado!';
         }
       }, 1000);
@@ -153,12 +153,12 @@ const char webpage[] PROGMEM = R"rawliteral(
 </html>
 )rawliteral";
 
-// Prototipagem
+
 void handleRoot();
 void handleSetDigit();
 void displayDigit(int digit);
 
-// Setup
+
 void setup() {
   Serial.begin(115200);
   pixels.begin();
@@ -170,19 +170,19 @@ void setup() {
   Serial.println("Conectado ao WiFi. IP:");
   Serial.println(WiFi.localIP());
 
-  // Configuração do servidor
+  
   server.on("/", handleRoot);
   server.on("/setDigit", handleSetDigit);
   server.begin();
   Serial.println("Servidor iniciado!");
 }
 
-// Loop principal
+
 void loop() {
   server.handleClient();
 }
 
-// Função para exibir a página inicial
+
 void handleRoot() {
   server.send_P(200, "text/html", webpage);
 }
@@ -207,7 +207,7 @@ void displayDigit(int digit) {
 
   for (int segment = 0; segment < NUM_SEGMENTS; segment++) {
     if (pgm_read_byte(&(digits[digit][segment])) == 1) { 
-      pixels.setPixelColor(segment, pixels.Color(0, 150, 0)); // Define a cor
+      pixels.setPixelColor(segment, pixels.Color(0, 150, 0)); 
     }
   }
   pixels.show();
